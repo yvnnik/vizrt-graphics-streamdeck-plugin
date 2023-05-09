@@ -1,11 +1,11 @@
 {
     "Actions": [
       {
-        "Icon": "vizIcon",
+        "Icon": "assets/vizIcon",
         "Name": "Vizrt Graphics",
         "States": [
           {
-            "Image": "vizIcon",
+            "Image": "assets/vizIcon",
             "Title": "Startliste",
             "TitleAlignment": "bottom",
             "FontSize": "10"
@@ -32,10 +32,10 @@
     "Author": "Yannik Quellmalz",
     "CodePath": "code.html",
     "Category": "Vizrt Graphics",
-    "CategoryIcon": "vizIcon",
+    "CategoryIcon": "assets/vizIcon",
     "Description": "This plugin will let you control graphics in Vizrt",
     "Name": "Vizrt Graphics",
-    "Icon": "vizIcon",
+    "Icon": "assets/vizIcon",
     "URL": "https://www.ba-dresden.de",
     "Version": "0.0.1",
     "OS": [
