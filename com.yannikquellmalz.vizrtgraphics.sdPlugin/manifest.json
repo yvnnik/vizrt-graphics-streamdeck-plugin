@@ -1,0 +1,50 @@
+{
+    "Actions": [
+      {
+        "Icon": "vizIcon",
+        "Name": "Vizrt Graphics",
+        "States": [
+          {
+            "Image": "vizIcon",
+            "Title": "Startliste",
+            "TitleAlignment": "bottom",
+            "FontSize": "10"
+          }
+        ],
+        "Controllers": ["Keypad", "Encoder"],
+        "Encoder": {
+          "background": "backgroundImage",
+          "Icon": "StackAndLayoutImage",
+          "layout": "layoutName",
+          "StackColor": "#AABBCC",
+          "TriggerDescription": {
+            "Touch": "Will let you show a graphic in Vizrt",
+            "LongTouch": "Nothing will happen"
+          }
+        },
+        "SupportedInMultiActions": false,
+        "Tooltip": "Control the graphics in Vizrt.",
+        "UUID": "com.yannikquellmalz.vizrtgraphics.action",
+        "PropertyInspectorPath": "property-inspector/propertyinspector.html"
+      }
+    ],
+    "SDKVersion": 2,
+    "Author": "Yannik Quellmalz",
+    "CodePath": "code.html",
+    "Category": "Vizrt Graphics",
+    "CategoryIcon": "vizIcon",
+    "Description": "This plugin will let you control graphics in Vizrt",
+    "Name": "Vizrt Graphics",
+    "Icon": "vizIcon",
+    "URL": "https://www.ba-dresden.de",
+    "Version": "0.0.1",
+    "OS": [
+      {
+        "Platform": "windows",
+        "MinimumVersion": "10"
+      }
+    ],
+    "Software": {
+      "MinimumVersion": "5.0"
+    }
+  }
