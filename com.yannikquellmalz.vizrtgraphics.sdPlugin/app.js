@@ -1,32 +1,3 @@
-function openWebsite() {
-  if (websocket && (websocket.readyState === 1)) {
-      const json = {
-          'action': 'com.yannikquellmalz.vizrtgraphics.action',
-          'event': 'openUrl',
-          'payload': {
-              'url': 'https://ba-dresden.de'
-          }
-      };
-      websocket.send(JSON.stringify(json));
-  }
-}
-
-var myAction = new Action('com.yannikquellmalz.vizrtgraphics.action');
-
-myAction.onKeyDown(({ action, event, payload }) => {
-	console.log('Key pressed!');
-
-  openWebsite();
-    /*
-    action: com.yannikquellmalz.vizrtgraphics.action;
-    event: openUrl;
-    payload: {
-      url: "https://www.ba-dresden.de"
-    }
-    */
-  });
-
-
 function connectElgatoStreamDeckSocket(inPort, inPluginUUID, inRegisterEvent, inInfo) {
   pluginUUID = inPluginUUID
 

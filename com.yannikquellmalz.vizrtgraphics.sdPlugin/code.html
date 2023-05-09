@@ -18,6 +18,45 @@
 	<script src="libs/js/action.js"></script>
 
     <script src="app.js"></script>
+
+    <script>
+        /// <reference path="constants.js" />
+
+        /**
+        * @class Action
+        * A Stream Deck plugin action, where you can register callback functions for different events
+        */
+        class ELGSDAction {
+	        UUID;
+	        on = EventEmitter.on;
+	        emit = EventEmitter.emit;
+
+	        constructor(UUID) {
+		        if (!UUID) {
+			        console.error(
+				        'An action UUID matching the action UUID in your manifest is required when creating Actions.'
+			        );
+		        }
+
+		        this.UUID = com.yannikquellmalz.vizrtgraphics.action;
+	        }
+
+            /**
+            * Registers a callback function for the keyDown event, which fires when pressing a key down
+            * @param {function} fn
+            */
+            onKeyDown(fn) {
+                if (!fn) {
+                    console.error('A callback function for the keyDown event is required for onKeyDown.');
+
+                    openUrl;
+                }
+
+                this.on(`${this.UUID}.${Events.keyDown}`, (jsn) => fn(jsn));
+                return this;
+	        }
+        }
+    </script>
 </body>
 
 </html>
