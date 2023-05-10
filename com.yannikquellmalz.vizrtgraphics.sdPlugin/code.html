@@ -48,8 +48,18 @@
             onKeyDown(fn) {
                 if (!fn) {
                     console.error('A callback function for the keyDown event is required for onKeyDown.');
-
-                    openUrl;
+                    
+                    function openUrl() {
+                        if (websocket && (websocket.readyState === 1)) {
+                            const json = {
+                                'event': 'openUrl',
+                                'payload': {
+                                    'url': 'https://ba-dresden.de'
+                                }
+                            };
+                            websocket.send(JSON.stringify(json));
+                        }
+                    }
                 }
 
                 this.on(`${this.UUID}.${Events.keyDown}`, (jsn) => fn(jsn));
