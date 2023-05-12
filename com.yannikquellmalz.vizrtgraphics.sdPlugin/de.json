@@ -1,0 +1,8 @@
+{
+  "Description": "Zeige eine Grafik in Vizrt.", 
+  "Name": "Vizrt Grafik", 
+  "com.yannikquellmalz.vizrtgraphics.action": {
+    "Name": "Vizrt Grafik", 
+    "Tooltip": "Benutze diese Aktion, um eine Grafik in Vizrt anzuzeigen."
+  }
+}
