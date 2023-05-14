@@ -1,6 +1,6 @@
 {
   "Description": "Show a graphic in Vizrt.", 
-  "Name": "Vizrt Graphics", 
+  "Name": "Show Vizrt Graphics", 
   "com.yannikquellmalz.vizrtgraphics.action": {
     "Name": "Vizrt Graphics", 
     "Tooltip": "Use this action to show a graphic in Vizrt."

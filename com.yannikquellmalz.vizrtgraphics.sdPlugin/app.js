@@ -11,6 +11,14 @@ var vizAction = {
     this.OpenURL();
   },
 
+  onKeyUp: function (context, settings, coordinates, userDesiredState) {
+  
+  },
+
+  onWillAppear: function (context, settings, coordinates, userDesiredState) {
+  
+  },
+
   SetSettings: function (context, settings) {
     var json = {
       "event": "setSettings",
@@ -65,20 +73,20 @@ function connectElgatoStreamDeckSocket(inPort, inPluginUUID, inRegisterEvent, in
       var settings = jsonPayload['settings'];
       var coordinates = jsonPayload['coordinates'];
       var userDesiredState = jsonPayload['userDesiredState'];
-      counterAction.onKeyDown(context, settings, coordinates, userDesiredState);
+      vizAction.onKeyDown(context, settings, coordinates, userDesiredState);
     }
     else if (event == "keyUp") {
       var jsonPayload = jsonObj['payload'];
       var settings = jsonPayload['settings'];
       var coordinates = jsonPayload['coordinates'];
       var userDesiredState = jsonPayload['userDesiredState'];
-      counterAction.onKeyUp(context, settings, coordinates, userDesiredState);
+      vizAction.onKeyUp(context, settings, coordinates, userDesiredState);
     }
     else if (event == "willAppear") {
       var jsonPayload = jsonObj['payload'];
       var settings = jsonPayload['settings'];
       var coordinates = jsonPayload['coordinates'];
-      counterAction.onWillAppear(context, settings, coordinates);
+      vizAction.onWillAppear(context, settings, coordinates);
     }
   };
 
