@@ -1,27 +1,27 @@
 var websocket = null;
 var pluginUUID = null;
+var vizSocket;
 
+//Funktion für Verbindung zu Viz
 function vizConnection() {
-  // Open the web socket
-  websocket = new WebSocket("ws://127.0.0.1:6100");
 
-  websocket.onopen = function () {
+  vizSocket = new WebSocket("ws://127.0.0.1:6100");
+
+  vizSocket.onopen = function () {
     // WebSocket is connected, send message
     console.log('WebSocket-Connection erfolgreich.');
-    
-    // Nachricht an Vizrt senden
-    const message = '#12646*TRANSFORMATION*POSITION COMMAND_INFO';
-    websocket.send(message);
-    console.log("Nachricht an Viz gesendet.");
+
+    const message = '#2763*TRANSFORMATION*POSITION*X GET';
+    socket.send(message);
   };
 
-  websocket.onmessage = function (event) {
+  vizSocket.onmessage = function (event) {
     const receivedMessage = event.data;
     console.log('Neue Nachricht erhalten: ', receivedMessage);
     // Verarbeite die eingehenden Nachrichten von Vizrt hier.
   };
 
-  websocket.onclose = function () {
+  vizSocket.onclose = function () {
     // Websocket is closed
     console.log("Websocket geschlossen.");
   };
