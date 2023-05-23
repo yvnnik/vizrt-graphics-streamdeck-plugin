@@ -1,6 +1,52 @@
 var websocket = null;
 var pluginUUID = null;
 
+function performHandshake(socket) {
+  const connectionUrl = 'ws://127.0.0.1:6100';
+
+  // WebSocket-Verbindung herstellen
+  socket = new WebSocket(connectionUrl, 'vizrt-protocol');
+
+  // Handshake-Header setzen
+  socket.onopen = function() {
+    const handshakeHeaders = [
+      'GET / HTTP/1.1',
+      'Upgrade: websocket',
+      'Connection: Upgrade',
+      'Sec-WebSocket-Protocol: vizrt-protocol',
+      'Sec-WebSocket-Version: 13',
+    ];
+
+    socket.send(handshakeHeaders.join('\r\n'));
+    console.log('WebSocket-Handshake erfolgreich.');
+    
+    // Nachricht an Vizrt senden
+    const message = '#12646*TRANSFORMATION*POSITION COMMAND_INFO';
+    socket.send(message);
+  };
+
+  socket.onmessage = function(event) {
+    const receivedMessage = event.data;
+    console.log('Neue Nachricht erhalten:', receivedMessage);
+    // Verarbeite die eingehenden Nachrichten von Vizrt hier.
+  };
+
+  socket.onerror = function(error) {
+    console.error('WebSocket-Fehler:', error);
+    // Behandle den Fehler entsprechend.
+  };
+
+  socket.onclose = function(event) {
+    console.log('WebSocket-Verbindung zu Vizrt geschlossen:', event);
+    // Führe hier Aufräumarbeiten durch, wenn die Verbindung geschlossen wird.
+  };
+}
+
+// Handshake-Funktion aufrufen
+let socket;
+performHandshake(socket);
+
+//Aktion definieren
 var vizAction = {
 
   type: "com.yannikquellmalz.vizrtgraphics.action",
@@ -41,6 +87,7 @@ var vizAction = {
   }
 };
 
+//Funktion für Verbindung zum Stream Deck
 function connectElgatoStreamDeckSocket(inPort, inPluginUUID, inRegisterEvent, inInfo) {
   pluginUUID = inPluginUUID
 
@@ -52,6 +99,7 @@ function connectElgatoStreamDeckSocket(inPort, inPluginUUID, inRegisterEvent, in
       "event": inRegisterEvent,
       "uuid": inPluginUUID
     };
+
 
     websocket.send(JSON.stringify(json));
   };
