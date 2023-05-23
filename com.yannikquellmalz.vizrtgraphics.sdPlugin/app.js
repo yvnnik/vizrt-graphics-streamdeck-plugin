@@ -1,50 +1,31 @@
 var websocket = null;
 var pluginUUID = null;
 
-function performHandshake(socket) {
-  const connectionUrl = 'ws://127.0.0.1:6100';
+function vizConnection() {
+  // Open the web socket
+  websocket = new WebSocket("ws://127.0.0.1:6100");
 
-  // WebSocket-Verbindung herstellen
-  socket = new WebSocket(connectionUrl, 'vizrt-protocol');
-
-  // Handshake-Header setzen
-  socket.onopen = function() {
-    const handshakeHeaders = [
-      'GET / HTTP/1.1',
-      'Upgrade: websocket',
-      'Connection: Upgrade',
-      'Sec-WebSocket-Protocol: vizrt-protocol',
-      'Sec-WebSocket-Version: 13',
-    ];
-
-    socket.send(handshakeHeaders.join('\r\n'));
-    console.log('WebSocket-Handshake erfolgreich.');
+  websocket.onopen = function () {
+    // WebSocket is connected, send message
+    console.log('WebSocket-Connection erfolgreich.');
     
     // Nachricht an Vizrt senden
     const message = '#12646*TRANSFORMATION*POSITION COMMAND_INFO';
-    socket.send(message);
+    websocket.send(message);
+    console.log("Nachricht an Viz gesendet.");
   };
 
-  socket.onmessage = function(event) {
+  websocket.onmessage = function (event) {
     const receivedMessage = event.data;
-    console.log('Neue Nachricht erhalten:', receivedMessage);
+    console.log('Neue Nachricht erhalten: ', receivedMessage);
     // Verarbeite die eingehenden Nachrichten von Vizrt hier.
   };
 
-  socket.onerror = function(error) {
-    console.error('WebSocket-Fehler:', error);
-    // Behandle den Fehler entsprechend.
+  websocket.onclose = function () {
+    // Websocket is closed
+    console.log("Websocket geschlossen.");
   };
-
-  socket.onclose = function(event) {
-    console.log('WebSocket-Verbindung zu Vizrt geschlossen:', event);
-    // Führe hier Aufräumarbeiten durch, wenn die Verbindung geschlossen wird.
-  };
-}
-
-// Handshake-Funktion aufrufen
-let socket;
-performHandshake(socket);
+};
 
 //Aktion definieren
 var vizAction = {
