@@ -1,19 +1,12 @@
 var websocket = null;
 var pluginUUID = null;
-var vizSocket;
 
 //Funktion für Verbindung zu Viz
-function vizConnection() {
+var vizConnection = {
 
-  vizSocket = new WebSocket("ws://127.0.0.1:6100");
+  type: "com.yannikquellmalz.vizrtgraphics.connection",
 
-  vizSocket.onopen = function () {
-    // WebSocket is connected, send message
-    console.log('WebSocket-Connection erfolgreich.');
-
-    const message = '#2763*TRANSFORMATION*POSITION*X GET';
-    socket.send(message);
-  };
+  /*vizSocket = new WebSocket("ws://127.0.0.1:187");
 
   vizSocket.onmessage = function (event) {
     const receivedMessage = event.data;
@@ -24,7 +17,49 @@ function vizConnection() {
   vizSocket.onclose = function () {
     // Websocket is closed
     console.log("Websocket geschlossen.");
-  };
+  };*/
+
+  onKeyDown: function (context, settings, coordinates, userDesiredState) {
+    const socket = new WebSocket("ws://224.1.1.1:6100");
+    socket.OPEN;
+
+    console.log("OnKeyDown.");
+    console.log('WebSocket-Connection erfolgreich.');
+
+    const message = '#2763*TRANSFORMATION*POSITION*X GET';
+    socket.send(message);
+
+    socket.close;
+  },
+
+  onKeyUp: function (context, settings, coordinates, userDesiredState) {
+  
+  },
+
+  onWillAppear: function (context, settings, coordinates, userDesiredState) {
+  
+  },
+
+  SetSettings: function (context, settings) {
+    var json = {
+      "event": "setSettings",
+      "context": context,
+      "payload": settings
+    };
+
+    websocket.send(JSON.stringify(json));
+  },
+
+  OpenURL: function () {
+    var json = {
+      "event": "openUrl",
+      "payload": {
+        "url": "https://www.ba-sachsen.de",
+      }
+    };
+
+    websocket.send(JSON.stringify(json));
+  }
 };
 
 //Aktion definieren

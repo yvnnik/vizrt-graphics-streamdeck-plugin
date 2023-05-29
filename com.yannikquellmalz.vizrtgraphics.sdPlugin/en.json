@@ -4,5 +4,9 @@
   "com.yannikquellmalz.vizrtgraphics.action": {
     "Name": "Vizrt Graphics", 
     "Tooltip": "Use this action to show a graphic in Vizrt."
+  },
+  "com.yannikquellmalz.vizrtgraphics.connection": {
+    "Name": "connection", 
+    "Tooltip": "connection"
   }
 }
