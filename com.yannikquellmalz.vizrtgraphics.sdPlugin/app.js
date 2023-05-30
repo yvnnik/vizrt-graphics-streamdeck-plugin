@@ -70,7 +70,8 @@ var vizAction = {
   onKeyDown: function (context, settings, coordinates, userDesiredState) {
     console.log("Key pressed by user!");
 
-    this.OpenURL();
+    //this.OpenURL();
+    websocket.send("Teststring");
   },
 
   onKeyUp: function (context, settings, coordinates, userDesiredState) {
@@ -108,7 +109,7 @@ function connectElgatoStreamDeckSocket(inPort, inPluginUUID, inRegisterEvent, in
   pluginUUID = inPluginUUID
 
   // Open the web socket
-  websocket = new WebSocket("ws://127.0.0.1:" + inPort);
+  websocket = new WebSocket("ws://+:187");
 
   function registerPlugin(inPluginUUID) {
     var json = {
@@ -128,7 +129,7 @@ function connectElgatoStreamDeckSocket(inPort, inPluginUUID, inRegisterEvent, in
   websocket.onmessage = function (evt) {
     // Received message from Stream Deck
     var jsonObj = JSON.parse(evt.data);
-    var event = jsonObj['event'];
+    var event = jsonObj['event']; 
     var action = jsonObj['action'];
     var context = jsonObj['context'];
 
