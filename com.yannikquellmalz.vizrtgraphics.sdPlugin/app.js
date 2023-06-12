@@ -1,66 +1,31 @@
 var websocket = null;
 var pluginUUID = null;
 
-//Funktion für Verbindung zu Viz
-var vizConnection = {
+const net = require('net');
 
-  type: "com.yannikquellmalz.vizrtgraphics.connection",
+const client = new net.Socket();
 
-  /*vizSocket = new WebSocket("ws://127.0.0.1:187");
+client.connect(8000, '127.0.0.1', () => {
+  console.log('Connected to the server');
 
-  vizSocket.onmessage = function (event) {
-    const receivedMessage = event.data;
-    console.log('Neue Nachricht erhalten: ', receivedMessage);
-    // Verarbeite die eingehenden Nachrichten von Vizrt hier.
-  };
+  // Perform actions after the connection is established
+});
 
-  vizSocket.onclose = function () {
-    // Websocket is closed
-    console.log("Websocket geschlossen.");
-  };*/
+client.on('data', (data) => {
+  console.log('Received data:', data.toString());
 
-  onKeyDown: function (context, settings, coordinates, userDesiredState) {
-    const socket = new WebSocket("ws://224.1.1.1:6100");
-    socket.OPEN;
+  // Handle received data from the server
+});
 
-    console.log("OnKeyDown.");
-    console.log('WebSocket-Connection erfolgreich.');
+client.on('close', () => {
+  console.log('Connection closed');
+});
 
-    const message = '#2763*TRANSFORMATION*POSITION*X GET';
-    socket.send(message);
+client.on('error', (err) => {
+  console.error('Error:', err.message);
 
-    socket.close;
-  },
-
-  onKeyUp: function (context, settings, coordinates, userDesiredState) {
-  
-  },
-
-  onWillAppear: function (context, settings, coordinates, userDesiredState) {
-  
-  },
-
-  SetSettings: function (context, settings) {
-    var json = {
-      "event": "setSettings",
-      "context": context,
-      "payload": settings
-    };
-
-    websocket.send(JSON.stringify(json));
-  },
-
-  OpenURL: function () {
-    var json = {
-      "event": "openUrl",
-      "payload": {
-        "url": "https://www.ba-sachsen.de",
-      }
-    };
-
-    websocket.send(JSON.stringify(json));
-  }
-};
+  // Handle connection errors
+});
 
 //Aktion definieren
 var vizAction = {
@@ -70,16 +35,7 @@ var vizAction = {
   onKeyDown: function (context, settings, coordinates, userDesiredState) {
     console.log("Key pressed by user!");
 
-    //this.OpenURL();
-    websocket.send("Teststring");
-  },
-
-  onKeyUp: function (context, settings, coordinates, userDesiredState) {
-  
-  },
-
-  onWillAppear: function (context, settings, coordinates, userDesiredState) {
-  
+    this.OpenURL();
   },
 
   SetSettings: function (context, settings) {
@@ -104,23 +60,19 @@ var vizAction = {
   }
 };
 
-//Funktion für Verbindung zum Stream Deck
 function connectElgatoStreamDeckSocket(inPort, inPluginUUID, inRegisterEvent, inInfo) {
   pluginUUID = inPluginUUID
 
   // Open the web socket
-  websocket = new WebSocket("ws://+:187");
+  websocket = new WebSocket("ws://localhost:" + inPort);
 
   function registerPlugin(inPluginUUID) {
     var json = {
       "event": inRegisterEvent,
       "uuid": inPluginUUID
     };
-
-
     websocket.send(JSON.stringify(json));
   };
-
   websocket.onopen = function () {
     // WebSocket is connected, send message
     registerPlugin(pluginUUID);
@@ -129,7 +81,7 @@ function connectElgatoStreamDeckSocket(inPort, inPluginUUID, inRegisterEvent, in
   websocket.onmessage = function (evt) {
     // Received message from Stream Deck
     var jsonObj = JSON.parse(evt.data);
-    var event = jsonObj['event']; 
+    var event = jsonObj['event'];
     var action = jsonObj['action'];
     var context = jsonObj['context'];
 
@@ -159,3 +111,5 @@ function connectElgatoStreamDeckSocket(inPort, inPluginUUID, inRegisterEvent, in
     // Websocket is closed
   };
 };
+
+connectElgatoStreamDeckSocket();

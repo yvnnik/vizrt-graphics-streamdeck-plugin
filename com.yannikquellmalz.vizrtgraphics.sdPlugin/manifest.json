@@ -41,36 +41,9 @@
           "LongTouch": "Nothing will happen"
         }
       },
-      "SupportedInMultiActions": true,
+      "SupportedInMultiActions": false,
       "Tooltip": "Control the graphics in Vizrt.",
       "UUID": "com.yannikquellmalz.vizrtgraphics.action",
-      "PropertyInspectorPath": "property-inspector/propertyinspector.html"
-    },
-    {
-      "Icon": "assets/vizIcon",
-      "Name": "Vizrt Graphics",
-      "States": [
-        {
-          "Image": "assets/vizIcon",
-          "Title": "Startliste",
-          "TitleAlignment": "bottom",
-          "FontSize": "10"
-        }
-      ],
-      "Controllers": ["Keypad", "Encoder"],
-      "Encoder": {
-        "background": "backgroundImage",
-        "Icon": "StackAndLayoutImage",
-        "layout": "layoutName",
-        "StackColor": "#AABBCC",
-        "TriggerDescription": {
-          "Touch": "Will let you show a graphic in Vizrt",
-          "LongTouch": "Nothing will happen"
-        }
-      },
-      "SupportedInMultiActions": true,
-      "Tooltip": "Control the graphics in Vizrt.",
-      "UUID": "com.yannikquellmalz.vizrtgraphics.connection",
       "PropertyInspectorPath": "property-inspector/propertyinspector.html"
     }
   ]
