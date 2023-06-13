@@ -1,65 +1,45 @@
-var websocket = null;
-var pluginUUID = null;
+let websocket = null;
+let pluginUUID = null;
 
-//Funktion für Verbindung zu Viz
-var vizConnection = {
-
-  type: "com.yannikquellmalz.vizrtgraphics.connection",
-
-  /*vizSocket = new WebSocket("ws://127.0.0.1:187");
-
-  vizSocket.onmessage = function (event) {
-    const receivedMessage = event.data;
-    console.log('Neue Nachricht erhalten: ', receivedMessage);
-    // Verarbeite die eingehenden Nachrichten von Vizrt hier.
-  };
-
-  vizSocket.onclose = function () {
-    // Websocket is closed
-    console.log("Websocket geschlossen.");
-  };*/
-
-  onKeyDown: function (context, settings, coordinates, userDesiredState) {
-    const socket = new WebSocket("ws://224.1.1.1:6100");
-    socket.OPEN;
-
-    console.log("OnKeyDown.");
-    console.log('WebSocket-Connection erfolgreich.');
-
-    const message = '#2763*TRANSFORMATION*POSITION*X GET';
-    socket.send(message);
-
-    socket.close;
-  },
-
-  onKeyUp: function (context, settings, coordinates, userDesiredState) {
-  
-  },
-
-  onWillAppear: function (context, settings, coordinates, userDesiredState) {
-  
-  },
-
-  SetSettings: function (context, settings) {
-    var json = {
-      "event": "setSettings",
-      "context": context,
-      "payload": settings
-    };
-
-    websocket.send(JSON.stringify(json));
-  },
-
-  OpenURL: function () {
-    var json = {
-      "event": "openUrl",
-      "payload": {
-        "url": "https://www.ba-sachsen.de",
-      }
-    };
-
-    websocket.send(JSON.stringify(json));
+function openWebsite() {
+  if (websocket && (websocket.readyState === 1)) {
+      const json = {
+          'event': 'openUrl',
+          'payload': {
+              'url': 'https://www.ba-dresden.de'
+          }
+      };
+      websocket.send(JSON.stringify(json));
   }
+};
+
+let sceneId;
+
+function clicked() {
+  console.log("User clicked save button.");
+
+  // Get the input element by its ID
+  let inputElement = document.getElementById('property-inspector/propertyinspector.html/id-input');
+  
+  // Get the value entered in the input
+  sceneId = inputElement.value;
+  
+  // Log the value to the console
+  console.log("Eingegebene ID:", sceneId);
+}
+
+let myHeaders = new Headers();
+myHeaders.append("Content-Type", "application/json");
+
+let raw = JSON.stringify({
+  "Scene": sceneId
+});
+
+let requestOptions = {
+  method: 'PUT',
+  headers: myHeaders,
+  body: raw,
+  redirect: 'follow'
 };
 
 //Aktion definieren
@@ -70,57 +50,26 @@ var vizAction = {
   onKeyDown: function (context, settings, coordinates, userDesiredState) {
     console.log("Key pressed by user!");
 
-    //this.OpenURL();
-    websocket.send("Teststring");
+    fetch("http://127.0.0.1:61000/api/v1/renderer/layer/1", requestOptions)
+      .then(response => response.text())
+      .then(result => console.log(result))
+      .catch(error => console.log('error', error));
   },
-
-  onKeyUp: function (context, settings, coordinates, userDesiredState) {
-  
-  },
-
-  onWillAppear: function (context, settings, coordinates, userDesiredState) {
-  
-  },
-
-  SetSettings: function (context, settings) {
-    var json = {
-      "event": "setSettings",
-      "context": context,
-      "payload": settings
-    };
-
-    websocket.send(JSON.stringify(json));
-  },
-
-  OpenURL: function () {
-    var json = {
-      "event": "openUrl",
-      "payload": {
-        "url": "https://www.ba-sachsen.de",
-      }
-    };
-
-    websocket.send(JSON.stringify(json));
-  }
 };
 
-//Funktion für Verbindung zum Stream Deck
 function connectElgatoStreamDeckSocket(inPort, inPluginUUID, inRegisterEvent, inInfo) {
   pluginUUID = inPluginUUID
 
   // Open the web socket
-  websocket = new WebSocket("ws://+:187");
+  websocket = new WebSocket("ws://127.0.0.1:" + inPort);
 
   function registerPlugin(inPluginUUID) {
     var json = {
       "event": inRegisterEvent,
       "uuid": inPluginUUID
     };
-
-
     websocket.send(JSON.stringify(json));
   };
-
   websocket.onopen = function () {
     // WebSocket is connected, send message
     registerPlugin(pluginUUID);
@@ -129,7 +78,7 @@ function connectElgatoStreamDeckSocket(inPort, inPluginUUID, inRegisterEvent, in
   websocket.onmessage = function (evt) {
     // Received message from Stream Deck
     var jsonObj = JSON.parse(evt.data);
-    var event = jsonObj['event']; 
+    var event = jsonObj['event'];
     var action = jsonObj['action'];
     var context = jsonObj['context'];
 
@@ -159,3 +108,5 @@ function connectElgatoStreamDeckSocket(inPort, inPluginUUID, inRegisterEvent, in
     // Websocket is closed
   };
 };
+
+connectElgatoStreamDeckSocket();
