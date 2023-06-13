@@ -1,10 +1,38 @@
-var websocket = null;
-var pluginUUID = null;
+let websocket = null;
+let pluginUUID = null;
+
+function openWebsite() {
+  if (websocket && (websocket.readyState === 1)) {
+      const json = {
+          'event': 'openUrl',
+          'payload': {
+              'url': 'https://www.ba-dresden.de'
+          }
+      };
+      websocket.send(JSON.stringify(json));
+  }
+};
+
+let sceneId;
+
+function clicked() {
+  console.log("User clicked save button.");
+
+  // Get the input element by its ID
+  let inputElement = document.getElementById('id-input');
+  
+  // Get the value entered in the input
+  sceneId = inputElement.value;
+  
+  // Log the value to the console
+  console.log("Eingegebene ID:", sceneId);
+}
+
 let myHeaders = new Headers();
 myHeaders.append("Content-Type", "application/json");
 
 let raw = JSON.stringify({
-  "Scene": "D7A66277-DEDF-574A-BDCEC5E58489AB68"
+  "Scene": sceneId
 });
 
 let requestOptions = {
@@ -33,7 +61,7 @@ function connectElgatoStreamDeckSocket(inPort, inPluginUUID, inRegisterEvent, in
   pluginUUID = inPluginUUID
 
   // Open the web socket
-  websocket = new WebSocket("ws://localhost:" + inPort);
+  websocket = new WebSocket("ws://127.0.0.1:" + inPort);
 
   function registerPlugin(inPluginUUID) {
     var json = {
