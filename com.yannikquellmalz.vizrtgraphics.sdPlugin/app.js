@@ -13,21 +13,6 @@ function openWebsite() {
   }
 };
 
-let sceneId;
-
-function clicked() {
-  console.log("User clicked save button.");
-
-  // Get the input element by its ID
-  let inputElement = document.getElementById('id-input');
-  
-  // Get the value entered in the input
-  sceneId = inputElement.value;
-  
-  // Log the value to the console
-  console.log("Eingegebene ID:", sceneId);
-}
-
 //Aktion definieren
 var vizAction = {
 
@@ -36,24 +21,26 @@ var vizAction = {
   onKeyDown: function () {
     console.log("Key pressed by user!");
 
-    let myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
+    //this.OpenURL();
+    websocket.send("Teststring");
+  },
 
-    let raw = JSON.stringify({
-      "Scene": 'D7A66277-DEDF-574A-BDCEC5E58489AB68' //sceneId
-    });
+  onKeyUp: function (context, settings, coordinates, userDesiredState) {
+  
+  },
 
-    let requestOptions = {
-      method: 'PUT',
-      headers: myHeaders,
-      body: raw,
-      redirect: 'follow'
+  onWillAppear: function (context, settings, coordinates, userDesiredState) {
+  
+  },
+
+  SetSettings: function (context, settings) {
+    var json = {
+      "event": "setSettings",
+      "context": context,
+      "payload": settings
     };
 
-    fetch("http://127.0.0.1:61000/api/v1/renderer/layer/1", requestOptions)
-      .then(response => response.text())
-      .then(result => console.log(result))
-      .catch(error => console.log('error', error));
+    websocket.send(JSON.stringify(json));
   },
 };
 

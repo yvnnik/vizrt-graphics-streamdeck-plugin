@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "SDKVersion": 2,
   "Author": "Yannik Quellmalz",
@@ -47,4 +48,55 @@
       "PropertyInspectorPath": "property-inspector/propertyinspector.html"
     }
   ]
+=======
+{
+  "SDKVersion": 2,
+  "Author": "Yannik Quellmalz",
+  "CodePath": "code.html",
+  "Description": "This plugin will let you control graphics in Vizrt",
+  "Name": "Show Vizrt Graphics",
+  "Icon": "assets/vizIcon",
+  "URL": "https://www.ba-dresden.de/",
+  "Version": "0.0.1",
+  "OS": [
+    {
+      "Platform": "windows",
+      "MinimumVersion": "10"
+    }
+  ],
+  "Software": {
+    "MinimumVersion": "5.0"
+  },
+  "Category": "Bachelorarbeit",
+  "CategoryIcon": "assets/vizIcon",
+  "Actions": [
+    {
+      "Icon": "assets/vizIcon",
+      "Name": "Vizrt Graphics",
+      "States": [
+        {
+          "Image": "assets/vizIcon",
+          "Title": "Bsp.Titel",
+          "TitleAlignment": "bottom",
+          "FontSize": "10"
+        }
+      ],
+      "Controllers": ["Keypad", "Encoder"],
+      "Encoder": {
+        "background": "backgroundImage",
+        "Icon": "StackAndLayoutImage",
+        "layout": "layoutName",
+        "StackColor": "#AABBCC",
+        "TriggerDescription": {
+          "Touch": "Will let you show a graphic in Vizrt",
+          "LongTouch": "Nothing will happen"
+        }
+      },
+      "SupportedInMultiActions": false,
+      "Tooltip": "Control the graphics in Vizrt.",
+      "UUID": "com.yannikquellmalz.vizrtgraphics.action",
+      "PropertyInspectorPath": "property-inspector/propertyinspector.html"
+    }
+  ]
+>>>>>>> abecd57c6d81c67533c7935b10c611e4f682b526
 }
