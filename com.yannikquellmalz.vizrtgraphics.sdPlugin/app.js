@@ -1,31 +1,18 @@
 var websocket = null;
 var pluginUUID = null;
+let myHeaders = new Headers();
+myHeaders.append("Content-Type", "application/json");
 
-const net = require('net');
-
-const client = new net.Socket();
-
-client.connect(8000, '127.0.0.1', () => {
-  console.log('Connected to the server');
-
-  // Perform actions after the connection is established
+let raw = JSON.stringify({
+  "Scene": "D7A66277-DEDF-574A-BDCEC5E58489AB68"
 });
 
-client.on('data', (data) => {
-  console.log('Received data:', data.toString());
-
-  // Handle received data from the server
-});
-
-client.on('close', () => {
-  console.log('Connection closed');
-});
-
-client.on('error', (err) => {
-  console.error('Error:', err.message);
-
-  // Handle connection errors
-});
+let requestOptions = {
+  method: 'PUT',
+  headers: myHeaders,
+  body: raw,
+  redirect: 'follow'
+};
 
 //Aktion definieren
 var vizAction = {
@@ -35,29 +22,11 @@ var vizAction = {
   onKeyDown: function (context, settings, coordinates, userDesiredState) {
     console.log("Key pressed by user!");
 
-    this.OpenURL();
+    fetch("http://127.0.0.1:61000/api/v1/renderer/layer/1", requestOptions)
+      .then(response => response.text())
+      .then(result => console.log(result))
+      .catch(error => console.log('error', error));
   },
-
-  SetSettings: function (context, settings) {
-    var json = {
-      "event": "setSettings",
-      "context": context,
-      "payload": settings
-    };
-
-    websocket.send(JSON.stringify(json));
-  },
-
-  OpenURL: function () {
-    var json = {
-      "event": "openUrl",
-      "payload": {
-        "url": "https://www.ba-sachsen.de",
-      }
-    };
-
-    websocket.send(JSON.stringify(json));
-  }
 };
 
 function connectElgatoStreamDeckSocket(inPort, inPluginUUID, inRegisterEvent, inInfo) {

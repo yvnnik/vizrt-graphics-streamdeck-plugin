@@ -25,7 +25,7 @@
       "States": [
         {
           "Image": "assets/vizIcon",
-          "Title": "Startliste",
+          "Title": "Bsp.Titel",
           "TitleAlignment": "bottom",
           "FontSize": "10"
         }

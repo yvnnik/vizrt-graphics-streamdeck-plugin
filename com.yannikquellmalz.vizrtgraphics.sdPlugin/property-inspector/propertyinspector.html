@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <title>com.yannikquellmalz.vizrtgraphics Property Inspector</title>
-    <!-- <link rel="stylesheet" href="sdpi.css" /> -->
+    <link rel="stylesheet" href="sdpi.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/barraider/streamdeck-easypi@latest/src/sdpi.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/barraider/streamdeck-easypi@latest/src/rangeTooltip.css">
 </head>
@@ -21,28 +21,45 @@
             websocket.send(JSON.stringify(json));
         }
     }</script>
+
     <div class="sdpi-wrapper">
-        <details class="message">
-            <summary>Dieses Plugin wurde im Rahmen einer Bachelorarbeit für die BA Dresden von Yannik Quellmalz erstellt. <span class="linkspan" onclick="openWebsite()">https://www.ba-dresden.de</span> </summary>
-        </details>
+        <!--<details class="message">
+            <summary> </summary>
+        </details>-->
+
+        <div class="sdpi-heading">ANLEITUNG</div>
 
         <div class="sdpi-item">
-            <span>Anleitung:<br />Trage unten den Namen der enstprechenden Grafik ein, die angezeigt werden soll. Oben im Titel benennst du den Button.</span>
+            <span>Trage unten die ID der Grafik ein, die angezeigt werden soll. Oben im Titel benennst du diesen Button.</span>
         </div>
 
         <hr />
 
-        <div type="textarea" class="sdpi-item" id="text">
-            <div class="sdpi-item-label">Viz Container Name</div>
+        <div type="textarea" class="sdpi-item" id="text" title="In dieses Feld musst du die ID der Szene eintragen, welche in Viz Artist angezeigt werden soll. Öffne dazu die Viz Engine und klicke auf die Szene. Die ID siehst du im gleichen Format, welches der Platzhalter dieses Feldes besitzt.">
+            <div class="sdpi-item-label">Szenen ID:</div>
             <span class="sdpi-item-value">
-                <input type="text"  id="mytext" placeholder="Startliste"></input>
+                <input type="text"  id="id-input" required placeholder="z.B. 00000000-0000-0000-0000-000000000000"></input>
             </span>
         </div>
+
+        <div class="sdpi-item">
+            <div class="sdpi-item-label" data-localize title="save-button"> </div>
+            <button
+                    class="sdpi-item-value"
+                    value="Save ID"
+                    data-localize
+                    id="open-external">
+                Click Me
+            </button>
+        </div>
+
+        <details open class="noInnerMargins">
+            <summary>Info</summary>
+            <p>Dieses Plugin wurde im Rahmen einer Bachelorarbeit für die BA Dresden von Yannik Quellmalz erstellt. <span class="linkspan" onclick="openWebsite()">https://www.ba-dresden.de</span></p>
+          </details>
     <div>
     
-    <script>
-        
-    </script>
+    <script src="../app.js"></script>
 </body>
 
 </html>
