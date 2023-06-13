@@ -28,27 +28,27 @@ function clicked() {
   console.log("Eingegebene ID:", sceneId);
 }
 
-let myHeaders = new Headers();
-myHeaders.append("Content-Type", "application/json");
-
-let raw = JSON.stringify({
-  "Scene": sceneId
-});
-
-let requestOptions = {
-  method: 'PUT',
-  headers: myHeaders,
-  body: raw,
-  redirect: 'follow'
-};
-
 //Aktion definieren
 var vizAction = {
 
   type: "com.yannikquellmalz.vizrtgraphics.action",
 
-  onKeyDown: function (context, settings, coordinates, userDesiredState) {
+  onKeyDown: function () {
     console.log("Key pressed by user!");
+
+    let myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    let raw = JSON.stringify({
+      "Scene": 'D7A66277-DEDF-574A-BDCEC5E58489AB68' //sceneId
+    });
+
+    let requestOptions = {
+      method: 'PUT',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
 
     fetch("http://127.0.0.1:61000/api/v1/renderer/layer/1", requestOptions)
       .then(response => response.text())
