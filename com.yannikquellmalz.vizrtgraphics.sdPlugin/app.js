@@ -1,47 +1,34 @@
 let websocket = null;
 let pluginUUID = null;
 
-function openWebsite() {
-  if (websocket && (websocket.readyState === 1)) {
-      const json = {
-          'event': 'openUrl',
-          'payload': {
-              'url': 'https://www.ba-dresden.de'
-          }
-      };
-      websocket.send(JSON.stringify(json));
-  }
-};
-
-//Aktion definieren
 var vizAction = {
-
   type: "com.yannikquellmalz.vizrtgraphics.action",
+  scene: '',
 
   onKeyDown: function () {
-    console.log("Key pressed by user!");
+    let myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
 
-    //this.OpenURL();
-    websocket.send("Teststring");
-  },
+    let raw = JSON.stringify({
+      "Scene": this.scene
+    });
 
-  onKeyUp: function (context, settings, coordinates, userDesiredState) {
-  
-  },
-
-  onWillAppear: function (context, settings, coordinates, userDesiredState) {
-  
-  },
-
-  SetSettings: function (context, settings) {
-    var json = {
-      "event": "setSettings",
-      "context": context,
-      "payload": settings
+    let requestOptions = {
+      method: 'PUT',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
     };
 
-    websocket.send(JSON.stringify(json));
+    fetch("http://127.0.0.1:61000/api/v1/renderer/layer/1", requestOptions)
+      .then(response => response.text())
+      .then(result => console.log(result))
+      .catch(error => console.log('error', error));
   },
+
+  onSendToPlugin: function (payload) {
+    this.scene = payload['scene'];
+  }
 };
 
 function connectElgatoStreamDeckSocket(inPort, inPluginUUID, inRegisterEvent, inInfo) {
@@ -69,25 +56,15 @@ function connectElgatoStreamDeckSocket(inPort, inPluginUUID, inRegisterEvent, in
     var action = jsonObj['action'];
     var context = jsonObj['context'];
 
-    if (event == "keyDown") {
-      var jsonPayload = jsonObj['payload'];
-      var settings = jsonPayload['settings'];
-      var coordinates = jsonPayload['coordinates'];
-      var userDesiredState = jsonPayload['userDesiredState'];
-      vizAction.onKeyDown(context, settings, coordinates, userDesiredState);
-    }
-    else if (event == "keyUp") {
-      var jsonPayload = jsonObj['payload'];
-      var settings = jsonPayload['settings'];
-      var coordinates = jsonPayload['coordinates'];
-      var userDesiredState = jsonPayload['userDesiredState'];
-      vizAction.onKeyUp(context, settings, coordinates, userDesiredState);
-    }
-    else if (event == "willAppear") {
-      var jsonPayload = jsonObj['payload'];
-      var settings = jsonPayload['settings'];
-      var coordinates = jsonPayload['coordinates'];
-      vizAction.onWillAppear(context, settings, coordinates);
+    switch (event) {
+      case "keyDown":
+        vizAction.onKeyDown(jsonPayload);
+        break;
+      case "sendToPlugin":
+        var jsonPayload = jsonObj['payload'];
+        vizAction.onSendToPlugin(jsonPayload);
+      default:
+        break;
     }
   };
 
@@ -95,5 +72,3 @@ function connectElgatoStreamDeckSocket(inPort, inPluginUUID, inRegisterEvent, in
     // Websocket is closed
   };
 };
-
-connectElgatoStreamDeckSocket();

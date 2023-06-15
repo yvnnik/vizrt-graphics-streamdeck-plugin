@@ -8,17 +8,6 @@
 </head>
 
 <body>
-    <script>function openWebsite() {
-        if (websocket && (websocket.readyState === 1)) {
-            const json = {
-                'event': 'openUrl',
-                'payload': {
-                    'url': 'https://www.ba-dresden.de'
-                }
-            };
-            websocket.send(JSON.stringify(json));
-        }
-    }</script>
     <div class="sdpi-wrapper">
         <div class="sdpi-heading">ANLEITUNG</div>
 
@@ -36,17 +25,57 @@
         </div>
 
         <div class="sdpi-item" id="button_full_width">
-            <button onclick="clicked()" class="sdpi-item-value" value="save-button">Save</button>
+            <button onclick="sendValueToPlugin()" class="sdpi-item-value" value="save-button">Save</button>
         </div>
 
         <details class="sdpi-item-value">
             <summary>Info</summary>
-            <p>Dieses Plugin wurde im Rahmen einer Bachelorarbeit für die <span class="linkspan" onclick="openWebsite()">BA Dresden</span> von Yannik Quellmalz erstellt.</p>
+            <p>Dieses Plugin wurde im Rahmen einer Bachelorarbeit für die <a href="www.google.com">BA Dresden</a> von Yannik Quellmalz erstellt.</p>
         </details>
     <div>
-    
+
     <script>
-        
+        const input = document.querySelector('#id-input');
+         // this is our global websocket, used to communicate from/to Stream Deck software
+        // and some info about our plugin, as sent by Stream Deck software
+        var websocket = null,
+        uuid = null,
+        actionInfo = {}
+
+        function connectElgatoStreamDeckSocket(inPort, inUUID, inRegisterEvent, inInfo, inActionInfo) {
+            uuid = inUUID;
+            // please note: the incoming arguments are of type STRING, so
+            // in case of the inActionInfo, we must parse it into JSON first
+            actionInfo = JSON.parse(inActionInfo); // cache the info
+            websocket = new WebSocket('ws://localhost:' + inPort);
+
+            // if connection was established, the websocket sends
+            // an 'onopen' event, where we need to register our PI
+            websocket.onopen = function () {
+                let json = {
+                    event:  inRegisterEvent,
+                    uuid:   inUUID
+                }
+                // register property inspector to Stream Deck
+                websocket.send(JSON.stringify(json));
+            }
+        }
+
+        // our method to pass values to the plugin
+        function sendValueToPlugin() {
+            if (websocket) {
+                console.log('Property Inspector tries to send value to client!');
+                const json = {
+                        "action": actionInfo['action'],
+                        "event": "sendToPlugin",
+                        "context": uuid,
+                        "payload": {
+                            'scene' : input.value
+                        }
+                 }
+                 websocket.send(JSON.stringify(json));
+            }
+        }
     </script>
 </body>
 
